@@ -3,43 +3,70 @@
         <div class="slds-col">
             <lightning-card title="Add New Task">
                 <div class="slds-var-p-around_small">
-                    <lightning-input label="Enter Task Name" 
-                        placeholder="Enter Task Details"
-                        message-when-value-missing="Please Enter Task Name" 
-                        required="true" 
-                        onchange={changeHandler}
-                        name="taskName"
-                        value={taskName}
-                        class="taskName"></lightning-input>
-                    <lightning-input type="date" 
-                        label="Set End Date" 
-                        field-level-help="Default End Date is Today"
-                        onchange={changeHandler} 
-                        name="taskDate"
-                        value={taskDate}
-                        class="taskDate"></lightning-input>
+                    <lightning-input label="Enter Task Name" placeholder="Enter Task Details"
+                        message-when-value-missing="Please Enter Task Name" required="true" onchange={changeHandler}
+                        name="taskName" value={taskName} class="taskName"></lightning-input>
+                    <lightning-input type="date" label="Set End Date" field-level-help="Default End Date is Today"
+                        onchange={changeHandler} name="taskDate" value={taskDate} class="taskDate"></lightning-input>
                     <div class="slds-var-p-around_small">
-                        <lightning-button variant="brand" 
-                        label="Reset" 
-                        onclick={handleReset}
-                        class="slds-var-p-around_small"></lightning-button>
-                        <lightning-button variant="brand" 
-                        label="Add Task" 
-                        onclick={handleNewtask}
-                        class="slds-var-p-around_small"></lightning-button>
+                        <lightning-button variant="brand" label="Reset" onclick={handleReset}
+                            class="slds-var-p-around_small"></lightning-button>
+                        <lightning-button variant="brand" label="Add Task" onclick={handleNewtask}
+                            class="slds-var-p-around_small"></lightning-button>
                     </div>
                 </div>
             </lightning-card>
         </div>
         <div class="slds-col">
             <lightning-card title="To Do List">
-                <div class="slds-var-p-around_small">
+                <div class="slds-var-p-around_small ">
+                    <template if:true={incompleteTask.length}>
+                        <template for:each={incompleteTask} for:item="currTask">
+                            <div class="slds-grid slds-gutters slds-box slds-theme_shade highlight_task"
+                                key={currTask.id}>
+                                <div class="slds-col slds-size_8-of-12 slds-m-around_x-small">
+                                    <p>{currTask.taskName}</p>
+                                    <p><lightning-formatted-date-time value={currTask.taskDate} year="2-digit"
+                                            month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+                                    </p>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12 slds-m-around_x-small">
+                                    <lightning-button-icon icon-name="utility:delete" variant="border-filled"
+                                        alternative-text="Delete" class="slds-m-left_xx-small" title="Delete"
+                                        data-id={currTask.id} onclick={handleDelete}></lightning-button-icon>
+                                    <lightning-button-icon icon-name="utility:check" variant="border-filled"
+                                        alternative-text="check" class="slds-m-left_xx-small" title="check"
+                                        data-id={currTask.id} onclick={handleCheck}></lightning-button-icon>
+                                </div>
+                            </div>
+                        </template>
+
+                    </template>
+                    <template if:false={incompleteTask.length}>
+                        <p>No tasks available</p>
+                    </template>
                 </div>
             </lightning-card>
         </div>
         <div class="slds-col">
             <lightning-card title="Completed items">
                 <div class="slds-var-p-around_small">
+                    <template if:true={completedTask.length}>
+                        <template for:each={completedTask} for:item="currTask">
+                            <div class="slds-grid slds-gutters slds-box slds-theme_shade highlight_task"
+                                key={currTask.taskName}>
+                                <div class="slds-col slds-size_1-of-1 slds-m-around_x-small">
+                                    <p>{currTask.taskName}</p>
+                                    <p><lightning-formatted-date-time value={currTask.taskDate} year="2-digit"
+                                            month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    <template if:false={incompleteTask.length}>
+                        <p>No completed tasks</p>
+                    </template>
                 </div>
             </lightning-card>
         </div>
